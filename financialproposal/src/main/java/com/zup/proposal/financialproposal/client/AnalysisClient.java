@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(
         value = "analysis",
         url = "http://localhost:9999",
-        fallback = AnalysisClientFallbackFactory.class
+        fallback = AnalysisClientFallback.class
 )
 public interface AnalysisClient {
 
-    @PostMapping("/api/solicitacao")
+    @PostMapping(value = "/api/solicitacao")
     AnalysisResponse analysisProposalRequest(AnalysisRequest request);
 }
