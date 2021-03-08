@@ -1,5 +1,8 @@
 package com.zup.proposal.financialproposal.proposal.controller;
 
+import com.zup.proposal.financialproposal.client.AnalysisClient;
+import com.zup.proposal.financialproposal.client.request.AnalysisRequest;
+import com.zup.proposal.financialproposal.client.response.AnalysisResponse;
 import com.zup.proposal.financialproposal.proposal.controller.request.ProposalRequest;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
 import com.zup.proposal.financialproposal.proposal.repository.ProposalRepository;
@@ -23,6 +26,9 @@ public class ProposalController {
     @Autowired
     private ProposalRepository repository;
 
+    @Autowired
+    private AnalysisClient client;
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid ProposalRequest request,
@@ -36,6 +42,10 @@ public class ProposalController {
 
         Proposal proposal = repository.save(request.toModel());
 
+        AnalysisResponse s = client.analysisProposalRequest(new AnalysisRequest(proposal.getId(), proposal.getDocument(), proposal.getName()));
+
+        System.out.println("s.getResult().getProposalStatus() = " + s.getResult().getProposalStatus());
+        
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().pathSegment("{id}")
                 .buildAndExpand(proposal.getId())
                 .toUri();

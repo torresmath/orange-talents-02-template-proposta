@@ -32,6 +32,10 @@ public class Proposal {
     @Column(columnDefinition = "Decimal(10,2)")
     private BigDecimal salary;
 
+//    @Enumerated(EnumType.STRING)
+//    @Column(columnDefinition = "ENUM(ELEGIVEL,NAO_ELEGIVEL)")
+//    private ProposalStatus status;
+
     @NotNull
     @Embedded
     private Address address;
@@ -65,4 +69,6 @@ public class Proposal {
     public String getName() { return name; }
 
     public String getNumber() { return address.getNumber(); }
+
+    public String getDocument() { return document; }
 }
