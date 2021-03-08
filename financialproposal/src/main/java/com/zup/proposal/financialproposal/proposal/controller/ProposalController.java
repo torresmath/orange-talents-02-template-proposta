@@ -2,6 +2,8 @@ package com.zup.proposal.financialproposal.proposal.controller;
 
 import com.zup.proposal.financialproposal.proposal.controller.request.ProposalRequest;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
+import com.zup.proposal.financialproposal.proposal.repository.ProposalRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.net.URI;
 
@@ -20,17 +20,21 @@ import java.net.URI;
 @RequestMapping("/api/proposal")
 public class ProposalController {
 
-    @PersistenceContext
-    private EntityManager manager;
+    @Autowired
+    private ProposalRepository repository;
 
     @PostMapping
     @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid ProposalRequest request,
                                     UriComponentsBuilder uriBuilder) {
 
-        Proposal proposal = request.toModel();
+        boolean duplicatedProposal = repository.existsByDocument(request.getDocument());
 
-        manager.persist(proposal);
+        if (duplicatedProposal) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
+        Proposal proposal = repository.save(request.toModel());
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().pathSegment("{id}")
                 .buildAndExpand(proposal.getId())

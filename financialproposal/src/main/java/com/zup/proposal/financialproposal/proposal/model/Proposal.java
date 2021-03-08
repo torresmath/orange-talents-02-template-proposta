@@ -21,6 +21,10 @@ public class Proposal {
 
     @NotNull
     @NotBlank
+    private String email;
+
+    @NotNull
+    @NotBlank
     private String document;
 
     @Positive
@@ -32,15 +36,21 @@ public class Proposal {
     @Embedded
     private Address address;
 
-    public Proposal(@NotNull @NotBlank String name, @NotNull @NotBlank String document, @Positive @NotNull BigDecimal salary, @NotNull Address address) {
+    public Proposal(@NotNull @NotBlank String name,
+                    @NotNull @NotBlank String email,
+                    @NotNull @NotBlank String document,
+                    @Positive @NotNull BigDecimal salary,
+                    @NotNull Address address) {
 
         Assert.isTrue(!name.isBlank(), "Impossivel criar Proposta com nome invalido");
+        Assert.isTrue(!email.isBlank(), "Impossivel criar Proposta com email invalido");
         Assert.isTrue(!document.isBlank(), "Impossivel criar Proposta com documento invalido");
         Assert.isTrue(salary.compareTo(BigDecimal.ZERO) > 0, "Impossivel criar Proposta com salário invalido: " + salary);
         Assert.notNull(address, "Impossivel criar Proposta sem endereco");
 
         this.name = name;
-        this.document = document;
+        this.email = email;
+        this.document = document.replaceAll("[.-]", "");
         this.salary = salary;
         this.address = address;
     }

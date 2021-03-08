@@ -47,9 +47,7 @@ public class ProposalRequest {
         return email;
     }
 
-    public String getDocument() {
-        return document;
-    }
+    public String getDocument() { return document.replaceAll("[.-]", ""); }
 
     public BigDecimal getSalary() {
         return salary;
@@ -60,6 +58,6 @@ public class ProposalRequest {
     }
 
     public Proposal toModel() {
-        return new Proposal(name, document, salary, address.toModel());
+        return new Proposal(name, email, document, salary, address.toModel());
     }
 }

@@ -5,6 +5,7 @@ import com.zup.proposal.financialproposal.builders.MockMvcBuilder;
 import com.zup.proposal.financialproposal.proposal.controller.request.AddressRequest;
 import com.zup.proposal.financialproposal.proposal.controller.request.ProposalRequest;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,8 +19,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
@@ -38,21 +38,36 @@ class ProposalControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    @DisplayName("Deveria retornar 201")
     void deveriaRetornar201() throws Exception {
 
         AddressRequest address = new AddressRequest("Rua", "111", "08572330");
-        ProposalRequest request = new ProposalRequest("matheus", "email@teste.com", "42549789873", BigDecimal.valueOf(1000L), address);
+        ProposalRequest request = new ProposalRequest("matheus", "email@teste.com", "56568071005", BigDecimal.valueOf(1000L), address);
 
         ResultActions perform = new MockMvcBuilder().perform("/api/proposal", request, 201, mockMvc, mapper);
 
         String location = perform.andReturn().getResponse().getHeader("Location");
 
-        Proposal proposal = manager.find(Proposal.class, 1L);
+        Proposal proposal = manager.find(Proposal.class, 2L);
 
-        assertEquals("http://localhost/api/proposal/1", location);
+        assertEquals("http://localhost/api/proposal/2", location);
         assertNotNull(proposal);
         assertEquals(request.getName(), proposal.getName());
         assertEquals(address.getNumber(), proposal.getNumber());
+    }
+
+    @Test
+    @DisplayName("Deveria retornar 422")
+    void deveriaRetornar422() throws Exception {
+
+        AddressRequest address = new AddressRequest("Rua", "111", "08572330");
+        ProposalRequest request = new ProposalRequest("matheus", "email@teste.com", "425.497.898-73", BigDecimal.valueOf(1000L), address);
+
+        new MockMvcBuilder().perform("/api/proposal", request, 422, mockMvc, mapper);
+
+        Proposal proposal = manager.find(Proposal.class, 2L);
+
+        assertNull(proposal);
     }
 
 }
