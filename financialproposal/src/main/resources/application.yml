@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/financial_proposals?useTimezone=true&serverTimezone=America/Sao_Paulo
+    username: root
+    password: ajudazupper
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    format-sql: true
+    hibernate.dll-auto: update
