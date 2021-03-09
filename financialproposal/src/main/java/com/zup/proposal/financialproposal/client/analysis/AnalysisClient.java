@@ -1,7 +1,7 @@
-package com.zup.proposal.financialproposal.client;
+package com.zup.proposal.financialproposal.client.analysis;
 
-import com.zup.proposal.financialproposal.client.request.AnalysisRequest;
-import com.zup.proposal.financialproposal.client.response.AnalysisResponse;
+import com.zup.proposal.financialproposal.client.ProposalApiRequest;
+import com.zup.proposal.financialproposal.client.analysis.response.AnalysisResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface AnalysisClient {
 
     @PostMapping(value = "/api/solicitacao")
-    AnalysisResponse analysisProposalRequest(AnalysisRequest request);
+    AnalysisResponse analysisProposalRequest(ProposalApiRequest request);
 }

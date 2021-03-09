@@ -1,6 +1,6 @@
 package com.zup.proposal.financialproposal.proposal.controller;
 
-import com.zup.proposal.financialproposal.client.AnalysisClient;
+import com.zup.proposal.financialproposal.client.analysis.AnalysisClient;
 import com.zup.proposal.financialproposal.proposal.controller.request.ProposalRequest;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
 import com.zup.proposal.financialproposal.proposal.repository.ProposalRepository;

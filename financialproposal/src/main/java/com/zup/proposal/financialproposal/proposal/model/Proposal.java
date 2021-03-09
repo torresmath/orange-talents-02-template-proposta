@@ -1,8 +1,8 @@
 package com.zup.proposal.financialproposal.proposal.model;
 
-import com.zup.proposal.financialproposal.client.AnalysisClient;
-import com.zup.proposal.financialproposal.client.request.AnalysisRequest;
-import com.zup.proposal.financialproposal.client.response.AnalysisResponse;
+import com.zup.proposal.financialproposal.client.analysis.AnalysisClient;
+import com.zup.proposal.financialproposal.client.ProposalApiRequest;
+import com.zup.proposal.financialproposal.client.analysis.response.AnalysisResponse;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -36,12 +36,14 @@ public class Proposal {
     private BigDecimal salary;
 
     @Enumerated(EnumType.STRING)
-//    @Column(columnDefinition = "ENUM(ELEGIVEL,NAO_ELEGIVEL)")
     private ProposalStatus status;
 
     @NotNull
     @Embedded
     private Address address;
+
+    @OneToOne(mappedBy = "proposal")
+    private CreditCard creditCard;
 
     public Proposal(@NotNull @NotBlank String name,
                     @NotNull @NotBlank String email,
@@ -76,7 +78,7 @@ public class Proposal {
     public String getDocument() { return document; }
 
     public void submitToAnalysis(AnalysisClient client) {
-        AnalysisResponse respose = client.analysisProposalRequest(new AnalysisRequest(id, document, name));
+        AnalysisResponse respose = client.analysisProposalRequest(new ProposalApiRequest(id, document, name));
 
         this.status = respose.getProposalStatus();
     }

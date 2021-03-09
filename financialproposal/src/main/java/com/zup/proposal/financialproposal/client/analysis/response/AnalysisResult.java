@@ -1,4 +1,4 @@
-package com.zup.proposal.financialproposal.client.response;
+package com.zup.proposal.financialproposal.client.analysis.response;
 
 import com.zup.proposal.financialproposal.proposal.model.ProposalStatus;
 

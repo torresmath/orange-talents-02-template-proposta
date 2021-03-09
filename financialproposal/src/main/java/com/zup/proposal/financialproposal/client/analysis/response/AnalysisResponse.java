@@ -1,4 +1,4 @@
-package com.zup.proposal.financialproposal.client.response;
+package com.zup.proposal.financialproposal.client.analysis.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

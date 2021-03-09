@@ -1,9 +1,9 @@
-package com.zup.proposal.financialproposal.client.request;
+package com.zup.proposal.financialproposal.client;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class AnalysisRequest {
+public class ProposalApiRequest {
 
     @NotNull
     private final Long idProposta;
@@ -16,7 +16,7 @@ public class AnalysisRequest {
     @NotBlank
     private final String nome;
 
-    public AnalysisRequest(Long idProposta, String documento, String nome) {
+    public ProposalApiRequest(Long idProposta, String documento, String nome) {
         this.idProposta = idProposta;
         this.documento = documento;
         this.nome = nome;

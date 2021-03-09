@@ -1,6 +1,5 @@
 package com.zup.proposal.financialproposal.proposal.controller.request;
 
-import com.zup.proposal.financialproposal.client.request.AnalysisRequest;
 import com.zup.proposal.financialproposal.common.annotations.CPForCNPJ;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
 

@@ -1,7 +1,7 @@
-package com.zup.proposal.financialproposal.client;
+package com.zup.proposal.financialproposal.client.analysis;
 
-import com.zup.proposal.financialproposal.client.request.AnalysisRequest;
-import com.zup.proposal.financialproposal.client.response.AnalysisResponse;
+import com.zup.proposal.financialproposal.client.ProposalApiRequest;
+import com.zup.proposal.financialproposal.client.analysis.response.AnalysisResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class AnalysisClientFallback implements AnalysisClient {
 
     @Override
-    public AnalysisResponse analysisProposalRequest(AnalysisRequest request) {
+    public AnalysisResponse analysisProposalRequest(ProposalApiRequest request) {
 
         System.out.println("ERROR HANDLING");
 
