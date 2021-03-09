@@ -1,11 +1,16 @@
 package com.zup.proposal.financialproposal.proposal.model;
 
-import com.zup.proposal.financialproposal.client.analysis.AnalysisClient;
 import com.zup.proposal.financialproposal.client.ProposalApiRequest;
+import com.zup.proposal.financialproposal.client.account.AccountClient;
+import com.zup.proposal.financialproposal.client.account.response.CreditCardResponse;
+import com.zup.proposal.financialproposal.client.analysis.AnalysisClient;
 import com.zup.proposal.financialproposal.client.analysis.response.AnalysisResponse;
+import com.zup.proposal.financialproposal.proposal.repository.ProposalRepository;
+import feign.FeignException;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -42,7 +47,7 @@ public class Proposal {
     @Embedded
     private Address address;
 
-    @OneToOne(mappedBy = "proposal")
+    @OneToOne(mappedBy = "proposal", cascade = CascadeType.ALL)
     private CreditCard creditCard;
 
     public Proposal(@NotNull @NotBlank String name,
@@ -65,7 +70,7 @@ public class Proposal {
     }
 
     /**
-     * @deprecated hibernate and tests use only
+     * @deprecated hibernate
      */
     public Proposal() { }
 
@@ -78,8 +83,29 @@ public class Proposal {
     public String getDocument() { return document; }
 
     public void submitToAnalysis(AnalysisClient client) {
-        AnalysisResponse respose = client.analysisProposalRequest(new ProposalApiRequest(id, document, name));
 
-        this.status = respose.getProposalStatus();
+        try {
+            AnalysisResponse respose = client.analysisProposalRequest(new ProposalApiRequest(id, document, name));
+            this.status = respose.getProposalStatus();
+        } catch (FeignException e) {
+            this.status = ProposalStatus.NAO_ELEGIVEL;
+        }
+
+    }
+
+    @Transactional
+    public void generateCreditCard(AccountClient client, ProposalRepository repository) {
+
+        if (status == ProposalStatus.NAO_ELEGIVEL || this.creditCard != null) {
+            return;
+        }
+
+        try {
+            CreditCardResponse response = client.requestCreditCard(new ProposalApiRequest(id, document, name));
+            this.creditCard = response.toCreditCard(this);
+            repository.save(this);
+        } catch (Exception ignored) {
+
+        }
     }
 }

@@ -11,3 +11,9 @@ spring:
     hibernate.ddl-auto: update
 
 management.endpoints.web.exposure.include: health
+
+feign.hystrix.enabled: true
+
+api:
+  account.url: localhost:8888
+  analysis.url: localhost:9999

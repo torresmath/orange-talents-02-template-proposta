@@ -6,6 +6,12 @@ import com.zup.proposal.financialproposal.proposal.model.ProposalStatus;
 
 public class AnalysisResponse {
 
+    public AnalysisResponse() { }
+
+    public AnalysisResponse(AnalysisResult result) {
+        this.result = result;
+    }
+
     @JsonProperty("resultadoSolicitacao")
     private AnalysisResult result;
 

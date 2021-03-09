@@ -1,17 +1,19 @@
 package com.zup.proposal.financialproposal.client.account.response;
 
+import com.zup.proposal.financialproposal.proposal.model.CreditCard;
+import com.zup.proposal.financialproposal.proposal.model.Proposal;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public class CreditCardResponse {
 
-    private String id;
-    private Long idProposta;
-    private LocalDateTime emitidoEm;
-    private String titular;
-    private BigDecimal limite;
-    private Map<String, String> vencimento;
+    private final String id;
+    private final Long idProposta;
+    private final LocalDateTime emitidoEm;
+    private final String titular;
+    private final BigDecimal limite;
+    private final CreditCardDueResponse vencimento;
 
     public String getId() { return id; }
 
@@ -23,5 +25,18 @@ public class CreditCardResponse {
 
     public BigDecimal getLimite() { return limite; }
 
-    public Map<String, String> getVencimento() { return vencimento; }
+    public CreditCardDueResponse getVencimento() { return vencimento; }
+
+    public CreditCardResponse(String id, Long idProposta, LocalDateTime emitidoEm, String titular, BigDecimal limite, CreditCardDueResponse vencimento) {
+        this.id = id;
+        this.idProposta = idProposta;
+        this.emitidoEm = emitidoEm;
+        this.titular = titular;
+        this.limite = limite;
+        this.vencimento = vencimento;
+    }
+
+    public CreditCard toCreditCard(Proposal proposal) {
+        return new CreditCard(id, titular, emitidoEm, limite, vencimento.toCreditCardDue(), proposal);
+    }
 }

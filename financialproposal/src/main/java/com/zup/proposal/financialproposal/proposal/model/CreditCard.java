@@ -30,16 +30,15 @@ public class CreditCard {
     @Positive
     private BigDecimal cardLimit;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @NotNull
     private Proposal proposal;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+//    @NotNull
+    @OneToOne(cascade = CascadeType.MERGE)
     private CreditCardDue expiration;
 
-
-    public CreditCard(@NotNull @NotBlank String number, @NotNull @NotBlank String owner, @NotNull LocalDateTime emissionDate, @NotNull @Positive BigDecimal cardLimit, Proposal proposal, @NotNull CreditCardDue expiration) {
+    public CreditCard(@NotNull @NotBlank String number, @NotNull @NotBlank String owner, @NotNull LocalDateTime emissionDate, @NotNull @Positive BigDecimal cardLimit, @NotNull CreditCardDue expiration, @NotNull Proposal proposal) {
         this.number = number;
         this.owner = owner;
         this.emissionDate = emissionDate;

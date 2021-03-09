@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient(
         name = "account",
-        url = "localhost:8888"
+        url = "${api.account.url}"
 )
 public interface AccountClient {
 
