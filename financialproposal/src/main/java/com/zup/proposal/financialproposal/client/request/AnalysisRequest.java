@@ -10,21 +10,21 @@ public class AnalysisRequest {
 
     @NotNull
     @NotBlank
-    private final String skaoskap; // SHOULD PRODUCE BAD REQUEST
+    private final String documento; // SHOULD PRODUCE BAD REQUEST
 
     @NotNull
     @NotBlank
     private final String nome;
 
-    public AnalysisRequest(Long idProposta, String skaoskap, String nome) {
+    public AnalysisRequest(Long idProposta, String documento, String nome) {
         this.idProposta = idProposta;
-        this.skaoskap = skaoskap;
+        this.documento = documento;
         this.nome = nome;
     }
 
     public Long getIdProposta() { return idProposta; }
 
-    public String getSkaoskap() { return skaoskap; }
+    public String getDocumento() { return documento; }
 
     public String getNome() { return nome; }
 }

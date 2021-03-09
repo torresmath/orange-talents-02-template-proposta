@@ -1,5 +1,8 @@
 package com.zup.proposal.financialproposal.proposal.model;
 
+import com.zup.proposal.financialproposal.client.AnalysisClient;
+import com.zup.proposal.financialproposal.client.request.AnalysisRequest;
+import com.zup.proposal.financialproposal.client.response.AnalysisResponse;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -32,9 +35,9 @@ public class Proposal {
     @Column(columnDefinition = "Decimal(10,2)")
     private BigDecimal salary;
 
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
 //    @Column(columnDefinition = "ENUM(ELEGIVEL,NAO_ELEGIVEL)")
-//    private ProposalStatus status;
+    private ProposalStatus status;
 
     @NotNull
     @Embedded
@@ -71,4 +74,10 @@ public class Proposal {
     public String getNumber() { return address.getNumber(); }
 
     public String getDocument() { return document; }
+
+    public void submitToAnalysis(AnalysisClient client) {
+        AnalysisResponse respose = client.analysisProposalRequest(new AnalysisRequest(id, document, name));
+
+        this.status = respose.getProposalStatus();
+    }
 }
