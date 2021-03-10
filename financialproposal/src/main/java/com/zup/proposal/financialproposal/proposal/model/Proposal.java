@@ -15,6 +15,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.function.Function;
 
 @Entity
 public class Proposal {
@@ -72,15 +73,24 @@ public class Proposal {
     /**
      * @deprecated hibernate
      */
-    public Proposal() { }
+    public Proposal() {
+    }
 
-    public Long getId() { return this.id; }
+    public Long getId() {
+        return this.id;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public String getNumber() { return address.getNumber(); }
+    public String getNumber() {
+        return address.getNumber();
+    }
 
-    public String getDocument() { return document; }
+    public String getDocument() {
+        return document;
+    }
 
     public void submitToAnalysis(AnalysisClient client) {
 
@@ -107,5 +117,17 @@ public class Proposal {
         } catch (Exception ignored) {
 
         }
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public ProposalStatus getStatus() {
+        return status;
+    }
+
+    public <T> T mapAddress(Function<Address, T> mapper) {
+        return mapper.apply(address);
     }
 }

@@ -70,4 +70,17 @@ class ProposalControllerTest {
         assertNull(proposal);
     }
 
+    @Test
+    @DisplayName("Deveria encontrar Proposta e retornar 200")
+    void deveriaEncontrarRetornar200() throws Exception {
+
+        new MockMvcBuilder().get("/api/proposal/1", 200, mockMvc);
+    }
+
+    @Test
+    @DisplayName("Deveria retornar 404 caso nao encontre Proposta")
+    void deveriaRetornar404NotFound() throws Exception {
+        new MockMvcBuilder().get("/api/proposal/99999", 404, mockMvc);
+    }
+
 }

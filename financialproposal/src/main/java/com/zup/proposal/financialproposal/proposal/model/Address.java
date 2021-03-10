@@ -33,7 +33,18 @@ public class Address {
     /**
      * @deprecated hibernate use only
      */
-    public Address() { }
+    public Address() {
+    }
 
-    public String getNumber() { return number; }
+    public String getNumber() {
+        return number;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
 }

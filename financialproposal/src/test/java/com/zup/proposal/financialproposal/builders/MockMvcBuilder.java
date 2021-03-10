@@ -28,4 +28,13 @@ public class MockMvcBuilder {
                 .status()
                 .is(expectedStatus));
     }
+
+    public ResultActions get(String uri, int expectedStatus, MockMvc mockMvc) throws Exception {
+        return mockMvc.perform(
+                MockMvcRequestBuilders
+                .get(uri)
+        ).andExpect(MockMvcResultMatchers
+        .status()
+        .is(expectedStatus));
+    }
 }
