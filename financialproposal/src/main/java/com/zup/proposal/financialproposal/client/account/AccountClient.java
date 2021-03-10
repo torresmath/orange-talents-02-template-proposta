@@ -5,6 +5,8 @@ import com.zup.proposal.financialproposal.client.account.response.CreditCardResp
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Optional;
+
 @FeignClient(
         name = "account",
         url = "${api.account.url}"
@@ -12,5 +14,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface AccountClient {
 
     @PostMapping("/api/cartoes")
-    CreditCardResponse requestCreditCard(ProposalApiRequest request);
+    Optional<CreditCardResponse> requestCreditCard(ProposalApiRequest request);
 }

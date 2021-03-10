@@ -1,6 +1,5 @@
 package com.zup.proposal.financialproposal.proposal.model;
 
-import com.zup.proposal.financialproposal.client.ProposalApiRequest;
 import com.zup.proposal.financialproposal.client.account.AccountClient;
 import com.zup.proposal.financialproposal.client.account.response.CreditCardDueResponse;
 import com.zup.proposal.financialproposal.client.account.response.CreditCardResponse;
@@ -15,8 +14,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +44,7 @@ class ProposalTest {
     void deveriaSalvarCartao() {
 
         when(client.requestCreditCard(any()))
-                .thenReturn(response);
+                .thenReturn(Optional.of(response));
 
         proposal.generateCreditCard(client, repository);
         verify(repository, times(1)).save(any(Proposal.class));

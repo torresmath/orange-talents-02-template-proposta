@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -28,8 +27,7 @@ public class ProposalController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create(@RequestBody @Valid ProposalRequest request,
-                                    UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> create(@RequestBody @Valid ProposalRequest request) {
 
         boolean duplicatedProposal = repository.existsByDocument(request.getDocument());
 

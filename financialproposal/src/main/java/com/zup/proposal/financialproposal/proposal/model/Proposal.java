@@ -6,7 +6,6 @@ import com.zup.proposal.financialproposal.client.account.response.CreditCardResp
 import com.zup.proposal.financialproposal.client.analysis.AnalysisClient;
 import com.zup.proposal.financialproposal.client.analysis.response.AnalysisResponse;
 import com.zup.proposal.financialproposal.proposal.repository.ProposalRepository;
-import feign.FeignException;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -15,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Entity
@@ -94,12 +94,8 @@ public class Proposal {
 
     public void submitToAnalysis(AnalysisClient client) {
 
-        try {
-            AnalysisResponse respose = client.analysisProposalRequest(new ProposalApiRequest(id, document, name));
-            this.status = respose.getProposalStatus();
-        } catch (FeignException e) {
-            this.status = ProposalStatus.NAO_ELEGIVEL;
-        }
+        AnalysisResponse respose = client.analysisProposalRequest(new ProposalApiRequest(id, document, name));
+        this.status = respose.getProposalStatus();
 
     }
 
@@ -110,13 +106,11 @@ public class Proposal {
             return;
         }
 
-        try {
-            CreditCardResponse response = client.requestCreditCard(new ProposalApiRequest(id, document, name));
-            this.creditCard = response.toCreditCard(this);
+        Optional<CreditCardResponse> response = client.requestCreditCard(new ProposalApiRequest(id, document, name));
+        response.ifPresent(r -> {
+            this.creditCard = r.toCreditCard(this);
             repository.save(this);
-        } catch (Exception ignored) {
-
-        }
+        });
     }
 
     public BigDecimal getSalary() {
