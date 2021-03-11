@@ -40,12 +40,11 @@ class ProposalControllerUnitTest {
     private AnalysisClient client;
 
     private ProposalRequest request;
-    private AddressRequest addr;
 
     @BeforeEach
     public void init() {
 
-        addr = new AddressRequest("Rua", "111", "1234567");
+        AddressRequest addr = new AddressRequest("Rua", "111", "1234567");
         request = new ProposalRequest("Matheus", "email@email.com", "12345678", BigDecimal.ONE, addr);
     }
 

@@ -1,11 +1,15 @@
 package com.zup.proposal.financialproposal.proposal.model;
 
+import com.zup.proposal.financialproposal.biometry.model.Biometry;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "credit_card")
@@ -38,6 +42,9 @@ public class CreditCard {
     @OneToOne(cascade = CascadeType.MERGE)
     private CreditCardDue expiration;
 
+    @OneToMany(mappedBy = "creditCard", cascade = CascadeType.MERGE)
+    private Set<Biometry> biometries;
+
     public CreditCard(@NotNull @NotBlank String number, @NotNull @NotBlank String owner, @NotNull LocalDateTime emissionDate, @NotNull @Positive BigDecimal cardLimit, @NotNull CreditCardDue expiration, @NotNull Proposal proposal) {
         this.number = number;
         this.owner = owner;
@@ -51,4 +58,8 @@ public class CreditCard {
      * @deprecated hibernate
      */
     public CreditCard() { }
+
+    public Long getId() {
+        return id;
+    }
 }
