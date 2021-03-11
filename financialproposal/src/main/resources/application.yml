@@ -1,9 +1,9 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/financial_proposals?useTimezone=true&serverTimezone=America/Sao_Paulo
-    username: root
-    password: ajudazupper
+    url: jdbc:mysql://${DB_SUPPLIER}:3306/financial_proposals?useTimezone=true&serverTimezone=America/Sao_Paulo
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
@@ -15,5 +15,5 @@ management.endpoints.web.exposure.include: health
 feign.hystrix.enabled: true
 
 api:
-  account.url: localhost:8888
-  analysis.url: localhost:9999
+  account.url: ${ACCOUNT_API}:8888
+  analysis.url: ${ANALYSIS_API}:9999

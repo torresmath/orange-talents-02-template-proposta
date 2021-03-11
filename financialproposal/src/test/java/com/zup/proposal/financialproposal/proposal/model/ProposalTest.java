@@ -1,5 +1,6 @@
 package com.zup.proposal.financialproposal.proposal.model;
 
+import com.zup.proposal.financialproposal.client.ProposalApiRequest;
 import com.zup.proposal.financialproposal.client.account.AccountClient;
 import com.zup.proposal.financialproposal.client.account.response.CreditCardDueResponse;
 import com.zup.proposal.financialproposal.client.account.response.CreditCardResponse;
@@ -8,14 +9,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +30,9 @@ class ProposalTest {
 
     @Mock
     private ProposalRepository repository;
+
+    @Mock
+    private EntityManager manager;
 
     private Proposal proposal;
 
@@ -42,12 +49,33 @@ class ProposalTest {
     @Test
     @DisplayName("Deveria salvar cartao")
     void deveriaSalvarCartao() {
-
+        // WHEN
         when(client.requestCreditCard(any()))
                 .thenReturn(Optional.of(response));
 
+        // GIVEN
         proposal.generateCreditCard(client, repository);
+
+        ArgumentCaptor<ProposalApiRequest> captor = ArgumentCaptor.forClass(ProposalApiRequest.class);
+
+        // THEN
+        verify(client, times(1)).requestCreditCard(captor.capture());
         verify(repository, times(1)).save(any(Proposal.class));
+        assertEquals(proposal.getId(), captor.getValue().getIdProposta());
+    }
+
+    @Test
+    @DisplayName("Não deveria salvar em caso de falha no client")
+    void naoDeveriaSalvarClientErro() {
+        // WHEN
+        when(client.requestCreditCard(any()))
+                .thenReturn(Optional.empty());
+
+        // GIVEN
+        proposal.generateCreditCard(client, repository);
+
+        // THEN
+        verify(repository, times(0)).save(any(Proposal.class));
     }
 
     @Test
