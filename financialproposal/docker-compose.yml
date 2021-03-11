@@ -153,8 +153,6 @@ services:
       context: .
     image: java:11
     container_name: propostas
-    ports:
-      - 8080:8080
     depends_on:
       - mysql
     environment:
@@ -163,6 +161,7 @@ services:
       DB_PASSWORD: ajudazupper
       ACCOUNT_API: contas
       ANALYSIS_API: analise
+      SERVER_PORT: 8081
 
 volumes:
   grafana-volume:
