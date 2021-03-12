@@ -11,8 +11,8 @@ spring:
     format-sql: true
     hibernate.ddl-auto: update
   security.oauth2.resourceserver.jwt:
-    issuer-uri: http://localhost:18080/auth/realms/propostas
-    jwk-set-uri: http://localhost:18080/auth/realms/propostas/protocol/openid-connect/certs
+    issuer-uri: http://${KEYCLOAK_SUPPLIER:localhost}:18080/auth/realms/propostas
+    jwk-set-uri: http://${KEYCLOAK_SUPPLIER:localhost}:18080/auth/realms/propostas/protocol/openid-connect/certs
 
 management.endpoints.web.exposure.include: health
 
@@ -26,13 +26,6 @@ api:
 auth:
   client_id: proposals
   client_secret: f6e9c65d-9c80-4ca4-adeb-6ad3e7dfda2d
-  uri: http://localhost:18080/auth/realms/propostas/protocol/openid-connect/token
+  uri: http://${KEYCLOAK_SUPPLIER:localhost}}:18080/auth/realms/propostas/protocol/openid-connect/token
   grant_type: password
   scope: openid
-
-keycloak.realm: propostas
-keycloak.auth-server-url: http://${KEYCLOAK_SUPPLIER:localhost}}:18080/auth
-keycloak.ssl-required: external
-keycloak.resource: proposals
-keycloak.credentials.secret: f6e9c65d-9c80-4ca4-adeb-6ad3e7dfda2d
-keycloak.use-resource-role-mappings: true
