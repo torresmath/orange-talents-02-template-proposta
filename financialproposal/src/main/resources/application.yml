@@ -17,7 +17,16 @@ spring:
 management.endpoints.web.exposure.include: health
 
 # feign
-feign.hystrix.enabled: true
+
+feign:
+  hystrix.enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
+
 api:
   account.url: ${ACCOUNT_API}:8888
   analysis.url: ${ANALYSIS_API}:9999
