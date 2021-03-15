@@ -1,22 +1,23 @@
-package com.zup.proposal.financialproposal.common;
+package com.zup.proposal.financialproposal.creditcard.controller;
 
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Component
-public class ClientHostResolver {
+public class BlockRequestHeaders {
 
     private final HttpServletRequest request;
 
-    public ClientHostResolver(HttpServletRequest request) {
+    public BlockRequestHeaders(HttpServletRequest request) {
         this.request = request;
     }
 
     /**
      * Resolves client IP address when application is behind a NGINX or other reverse proxy server
      */
-    public String resolve() {
+    public String getClientIp() {
 
         String xRealIp = request.getHeader("X-Real-IP");
         String xForwardedFor = request.getHeader("X-Forwarded-For");
@@ -30,5 +31,8 @@ public class ClientHostResolver {
         else
             return remoteAddr;
     }
-}
 
+    public String getUserAgent() {
+        return request.getHeader("User-Agent");
+    }
+}
