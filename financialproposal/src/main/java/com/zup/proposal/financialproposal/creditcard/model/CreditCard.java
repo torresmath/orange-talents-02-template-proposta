@@ -1,7 +1,7 @@
 package com.zup.proposal.financialproposal.creditcard.model;
 
+import com.zup.proposal.financialproposal.client.account.AccountClient;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -10,7 +10,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "credit_card")
@@ -39,7 +41,7 @@ public class CreditCard {
     @NotNull
     private Proposal proposal;
 
-//    @NotNull
+    //    @NotNull
     @OneToOne(cascade = CascadeType.MERGE)
     private CreditCardDue expiration;
 
@@ -48,10 +50,6 @@ public class CreditCard {
 
     @OneToMany(mappedBy = "creditCard", cascade = CascadeType.MERGE)
     private Set<CreditCardBlock> blocks;
-
-    public boolean isCurrentlyBlocked() {
-        return blocks.stream().anyMatch(b -> b.getStatus().equals(BlockStatus.ACTIVE));
-    }
 
     public CreditCard(@NotNull @NotBlank String number, @NotNull @NotBlank String owner, @NotNull LocalDateTime emissionDate, @NotNull @Positive BigDecimal cardLimit, @NotNull CreditCardDue expiration, @NotNull Proposal proposal) {
         this.number = number;
@@ -65,20 +63,37 @@ public class CreditCard {
     /**
      * @deprecated hibernate
      */
-    public CreditCard() { }
+    public CreditCard() {
+    }
 
     public Long getId() {
         return id;
     }
 
-    public void block(CreditCardBlock block) {
+    public void scheduleBlock(CreditCardBlock block) {
         Assert.state(!isCurrentlyBlocked(), "Impossível adicionar novo bloqueio. Cartão já está bloqueado");
         Assert.state(!isScheduledToBlock(), "Impossível adicionar novo bloqueio. Já existe um bloqueio agendado");
 
         blocks.add(block);
     }
 
+    public boolean isCurrentlyBlocked() {
+        return this.blocks.stream().anyMatch(b -> b.getStatus().equals(BlockStatus.ACTIVE));
+    }
+
     public boolean isScheduledToBlock() {
         return blocks.stream().anyMatch(b -> b.getStatus().equals(BlockStatus.SCHEDULED));
+    }
+
+    public void block(AccountClient client) {
+
+        List<CreditCardBlock> scheduledBlocks = blocks.stream()
+                .filter(b -> b.getStatus().equals(BlockStatus.SCHEDULED))
+                .collect(Collectors.toList());
+
+        Assert.state(scheduledBlocks.size() <= 1, "ERRO - Existem múltiplos bloqueios agendados para este cartão");
+        Assert.state(scheduledBlocks.size() == 1, "ERRO - Não há bloqueios agendados para este cartão");
+
+        scheduledBlocks.get(0).setAsActive(client, this.number);
     }
 }

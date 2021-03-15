@@ -1,6 +1,5 @@
 package com.zup.proposal.financialproposal.creditcard.controller;
 
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;

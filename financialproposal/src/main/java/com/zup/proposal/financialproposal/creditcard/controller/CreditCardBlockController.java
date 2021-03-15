@@ -44,7 +44,7 @@ public class CreditCardBlockController {
             return invalidCreditCard.get();
         }
 
-        creditCard.block(new CreditCardBlock(clientIp, userAgent, creditCard));
+        creditCard.scheduleBlock(new CreditCardBlock(clientIp, userAgent, creditCard));
 
         manager.merge(creditCard);
 
