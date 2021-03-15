@@ -35,6 +35,6 @@ api:
 auth:
   client_id: proposals
   client_secret: f6e9c65d-9c80-4ca4-adeb-6ad3e7dfda2d
-  uri: http://${KEYCLOAK_SUPPLIER:localhost}}:18080/auth/realms/propostas/protocol/openid-connect/token
+  uri: http://${KEYCLOAK_SUPPLIER:localhost}:18080/auth/realms/propostas/protocol/openid-connect/token
   grant_type: password
   scope: openid
