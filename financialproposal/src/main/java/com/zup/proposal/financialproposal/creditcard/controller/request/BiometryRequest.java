@@ -1,9 +1,9 @@
-package com.zup.proposal.financialproposal.biometry.controller.request;
+package com.zup.proposal.financialproposal.creditcard.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.zup.proposal.financialproposal.biometry.model.Biometry;
+import com.zup.proposal.financialproposal.creditcard.model.Biometry;
 import com.zup.proposal.financialproposal.common.annotations.IsBase64;
-import com.zup.proposal.financialproposal.proposal.model.CreditCard;
+import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

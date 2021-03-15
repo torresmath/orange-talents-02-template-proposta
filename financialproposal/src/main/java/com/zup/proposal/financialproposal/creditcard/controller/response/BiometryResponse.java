@@ -1,6 +1,6 @@
-package com.zup.proposal.financialproposal.biometry.controller.response;
+package com.zup.proposal.financialproposal.creditcard.controller.response;
 
-import com.zup.proposal.financialproposal.biometry.model.Biometry;
+import com.zup.proposal.financialproposal.creditcard.model.Biometry;
 
 public class BiometryResponse {
 

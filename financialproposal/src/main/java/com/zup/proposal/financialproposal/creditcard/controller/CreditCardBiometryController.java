@@ -1,9 +1,9 @@
-package com.zup.proposal.financialproposal.biometry.controller;
+package com.zup.proposal.financialproposal.creditcard.controller;
 
-import com.zup.proposal.financialproposal.biometry.controller.request.BiometryRequest;
-import com.zup.proposal.financialproposal.biometry.controller.response.BiometryResponse;
-import com.zup.proposal.financialproposal.biometry.model.Biometry;
-import com.zup.proposal.financialproposal.proposal.model.CreditCard;
+import com.zup.proposal.financialproposal.creditcard.controller.request.BiometryRequest;
+import com.zup.proposal.financialproposal.creditcard.controller.response.BiometryResponse;
+import com.zup.proposal.financialproposal.creditcard.model.Biometry;
+import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;

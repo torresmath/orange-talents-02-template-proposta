@@ -1,10 +1,11 @@
 package com.zup.proposal.financialproposal.biometry.controller;
 
-import com.zup.proposal.financialproposal.biometry.controller.request.BiometryRequest;
-import com.zup.proposal.financialproposal.biometry.model.Biometry;
+import com.zup.proposal.financialproposal.creditcard.controller.CreditCardBiometryController;
+import com.zup.proposal.financialproposal.creditcard.controller.request.BiometryRequest;
+import com.zup.proposal.financialproposal.creditcard.model.Biometry;
 import com.zup.proposal.financialproposal.proposal.model.Address;
-import com.zup.proposal.financialproposal.proposal.model.CreditCard;
-import com.zup.proposal.financialproposal.proposal.model.CreditCardDue;
+import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
+import com.zup.proposal.financialproposal.creditcard.model.CreditCardDue;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

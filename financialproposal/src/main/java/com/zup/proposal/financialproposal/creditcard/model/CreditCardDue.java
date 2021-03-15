@@ -1,4 +1,4 @@
-package com.zup.proposal.financialproposal.proposal.model;
+package com.zup.proposal.financialproposal.creditcard.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

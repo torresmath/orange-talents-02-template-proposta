@@ -1,6 +1,6 @@
 package com.zup.proposal.financialproposal.client.account.response;
 
-import com.zup.proposal.financialproposal.proposal.model.CreditCardDue;
+import com.zup.proposal.financialproposal.creditcard.model.CreditCardDue;
 
 import java.time.LocalDateTime;
 

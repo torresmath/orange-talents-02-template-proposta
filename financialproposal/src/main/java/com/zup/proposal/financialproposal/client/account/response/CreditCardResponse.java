@@ -1,6 +1,6 @@
 package com.zup.proposal.financialproposal.client.account.response;
 
-import com.zup.proposal.financialproposal.proposal.model.CreditCard;
+import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
 
 import java.math.BigDecimal;

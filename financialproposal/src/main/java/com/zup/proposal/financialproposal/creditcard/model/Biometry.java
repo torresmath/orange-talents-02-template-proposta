@@ -1,8 +1,8 @@
-package com.zup.proposal.financialproposal.biometry.model;
+package com.zup.proposal.financialproposal.creditcard.model;
 
 import com.zup.proposal.financialproposal.common.Base64Utils;
 import com.zup.proposal.financialproposal.common.annotations.IsBase64;
-import com.zup.proposal.financialproposal.proposal.model.CreditCard;
+import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.util.Assert;
 

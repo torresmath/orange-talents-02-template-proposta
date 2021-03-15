@@ -1,6 +1,6 @@
-package com.zup.proposal.financialproposal.proposal.model;
+package com.zup.proposal.financialproposal.creditcard.model;
 
-import com.zup.proposal.financialproposal.biometry.model.Biometry;
+import com.zup.proposal.financialproposal.proposal.model.Proposal;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

@@ -5,6 +5,7 @@ import com.zup.proposal.financialproposal.client.account.AccountClient;
 import com.zup.proposal.financialproposal.client.account.response.CreditCardResponse;
 import com.zup.proposal.financialproposal.client.analysis.AnalysisClient;
 import com.zup.proposal.financialproposal.client.analysis.response.AnalysisResponse;
+import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
 import com.zup.proposal.financialproposal.proposal.repository.ProposalRepository;
 import org.springframework.util.Assert;
 
