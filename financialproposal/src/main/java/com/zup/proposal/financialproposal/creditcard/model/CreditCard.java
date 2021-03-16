@@ -2,6 +2,8 @@ package com.zup.proposal.financialproposal.creditcard.model;
 
 import com.zup.proposal.financialproposal.client.account.AccountClient;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
+import com.zup.proposal.financialproposal.wallet.model.Provider;
+import com.zup.proposal.financialproposal.wallet.model.Wallet;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -55,6 +57,9 @@ public class CreditCard {
 
     @OneToMany(mappedBy = "creditCard", cascade = CascadeType.MERGE)
     private Set<CreditCardTrip> trips = new HashSet<>();
+
+    @OneToMany(mappedBy = "creditCard", cascade = CascadeType.MERGE)
+    private Set<Wallet> wallets = new HashSet<>();
 
     public CreditCard(@NotNull @NotBlank String number, @NotNull @NotBlank String owner, @NotNull LocalDateTime emissionDate, @NotNull @Positive BigDecimal cardLimit, @NotNull CreditCardDue expiration, @NotNull Proposal proposal) {
         this.number = number;
@@ -122,5 +127,9 @@ public class CreditCard {
 
     public boolean haveScheduledTrips() {
         return trips.stream().anyMatch(t -> t.getEndDate().isAfter(LocalDate.now()));
+    }
+
+    public boolean haveWalletWithProvider(Provider provider) {
+        return wallets.stream().anyMatch(w -> w.getProvider().equals(provider));
     }
 }

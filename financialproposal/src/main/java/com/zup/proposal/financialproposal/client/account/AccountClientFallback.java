@@ -29,6 +29,11 @@ public class AccountClientFallback implements FallbackFactory<AccountClient> {
             public Optional<Map<String, String>> notifyCreditCardTrip(String number, Map<String, String> request) {
                 return Optional.empty();
             }
+
+            @Override
+            public Optional<Map<String, String>> submitWallet(String number, Map<String, String> request) {
+                return Optional.empty();
+            }
         };
     }
 }
