@@ -16,7 +16,7 @@ public class KeycloakAdapterConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(authorizeRequests ->
                 authorizeRequests
-                        .antMatchers("/actuator/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .antMatchers(HttpMethod.POST,"/api/auth").permitAll()
                         .antMatchers(HttpMethod.POST,"/api/auth/").permitAll()
                         .antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()

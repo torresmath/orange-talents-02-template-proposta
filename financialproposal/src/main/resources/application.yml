@@ -14,7 +14,15 @@ spring:
     issuer-uri: http://${KEYCLOAK_SUPPLIER:localhost}:18080/auth/realms/propostas
     jwk-set-uri: http://${KEYCLOAK_SUPPLIER:localhost}:18080/auth/realms/propostas/protocol/openid-connect/certs
 
-management.endpoints.web.exposure.include: health
+management:
+  endpoints:
+    web.exposure.include: health, prometheus, info
+    metrics.enabled: false
+    prometheus.enabled: true
+  metrics.tags:
+    app: ${APP_NAME:proposals}
+    env: ${ENV_NAME:dev}
+
 
 # feign
 

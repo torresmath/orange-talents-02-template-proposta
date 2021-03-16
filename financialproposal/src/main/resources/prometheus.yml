@@ -1,0 +1,9 @@
+scrape_configs:
+  - job_name: 'proposals-app'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['192.168.0.1:8080']
+  - job_name: 'prometheus-app'
+    scrape_interval: 5s
+    static_configs:
+      - targets: [ '192.168.0.1:9090' ]

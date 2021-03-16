@@ -21,7 +21,7 @@ public class BlockScheduledCreditCards {
     @Autowired
     private AccountClient client;
 
-    @Scheduled(fixedDelay = 10000)
+//    @Scheduled(fixedDelay = 10000)
     @Transactional
     @Lock(LockModeType.PESSIMISTIC_READ)
     public void blockScheduledCreditCards() {

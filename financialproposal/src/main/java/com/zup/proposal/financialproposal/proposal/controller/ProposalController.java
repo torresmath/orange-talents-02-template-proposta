@@ -5,6 +5,7 @@ import com.zup.proposal.financialproposal.proposal.controller.request.ProposalRe
 import com.zup.proposal.financialproposal.proposal.controller.response.ProposalResponse;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
 import com.zup.proposal.financialproposal.proposal.repository.ProposalRepository;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class ProposalController {
 
     @PostMapping
     @Transactional
+    @Timed(value = "proposta_criada")
     public ResponseEntity<?> create(@RequestBody @Valid ProposalRequest request) {
 
         boolean duplicatedProposal = repository.existsByDocument(request.getDocument());
@@ -46,6 +48,7 @@ public class ProposalController {
     }
 
     @GetMapping("/{id}")
+    @Timed(value = "consultar_proposta")
     public ResponseEntity<ProposalResponse> get(@PathVariable Long id) {
 
         Optional<Proposal> possibleProposal = repository.findById(id);
