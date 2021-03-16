@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 class CreditCardBlockControllerTest {
 
     @Mock
-    private BlockRequestHeaders headers;
+    private RequestHeadersValidation headers;
 
     @Mock
     private EntityManager manager;

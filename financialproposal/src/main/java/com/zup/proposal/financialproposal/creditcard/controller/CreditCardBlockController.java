@@ -1,15 +1,23 @@
 package com.zup.proposal.financialproposal.creditcard.controller;
 
+import com.zup.proposal.financialproposal.client.account.AccountClient;
+import com.zup.proposal.financialproposal.creditcard.model.BlockStatus;
 import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
 import com.zup.proposal.financialproposal.creditcard.model.CreditCardBlock;
+import com.zup.proposal.financialproposal.creditcard.repository.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -22,13 +30,19 @@ public class CreditCardBlockController {
     private EntityManager manager;
 
     @Autowired
-    private BlockRequestHeaders blockRequestHeaders;
+    private RequestHeadersValidation requestHeadersValidation;
+
+    @Autowired
+    private CreditCardRepository repository;
+
+    @Autowired
+    private AccountClient client;
 
     @PostMapping("/{id}/block")
     @Transactional
     public ResponseEntity<?> block(@PathVariable Long id) {
-        String clientIp = blockRequestHeaders.getClientIp();
-        String userAgent = blockRequestHeaders.getUserAgent();
+        String clientIp = requestHeadersValidation.getClientIp();
+        String userAgent = requestHeadersValidation.getUserAgent();
 
         Optional<ResponseEntity<?>> invalidHeaders = invalidHeaders(clientIp, userAgent);
 
@@ -88,5 +102,15 @@ public class CreditCardBlockController {
         }
 
         return Optional.empty();
+    }
+
+    @Async
+    @Transactional
+    @Scheduled(fixedDelay = 10000)
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    public void blockScheduledCreditCards() {
+
+        repository.findByBlocksStatus(BlockStatus.SCHEDULED, PageRequest.of(0, 5))
+                .forEach(creditCard -> creditCard.block(client));
     }
 }

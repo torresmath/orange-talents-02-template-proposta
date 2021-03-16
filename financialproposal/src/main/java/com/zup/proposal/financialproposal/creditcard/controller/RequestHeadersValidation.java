@@ -3,13 +3,15 @@ package com.zup.proposal.financialproposal.creditcard.controller;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
-public class BlockRequestHeaders {
+public class RequestHeadersValidation {
 
     private final HttpServletRequest request;
 
-    public BlockRequestHeaders(HttpServletRequest request) {
+    public RequestHeadersValidation(HttpServletRequest request) {
         this.request = request;
     }
 
@@ -33,5 +35,24 @@ public class BlockRequestHeaders {
 
     public String getUserAgent() {
         return request.getHeader("User-Agent");
+    }
+
+    public Optional<Map<String, String>> getHeaders() {
+        String clientIp = getClientIp();
+
+        if (clientIp == null)
+            return Optional.empty();
+
+        String userAgent = getUserAgent();
+
+        if (userAgent == null)
+            return Optional.empty();
+
+        return Optional.of(
+                Map.of(
+                        "ip_address", clientIp,
+                        "user_agent", userAgent
+                )
+        );
     }
 }

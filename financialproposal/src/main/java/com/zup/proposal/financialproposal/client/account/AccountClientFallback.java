@@ -10,6 +10,8 @@ import java.util.Optional;
 
 @Component
 public class AccountClientFallback implements FallbackFactory<AccountClient> {
+    // @todo implement logger
+
     @Override
     public AccountClient create(Throwable throwable) {
         return new AccountClient() {
@@ -20,6 +22,11 @@ public class AccountClientFallback implements FallbackFactory<AccountClient> {
 
             @Override
             public Optional<Map<String, String>> blockCreditCard(String number, Map<String, String> request) {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<Map<String, String>> notifyCreditCardTrip(String number, Map<String, String> request) {
                 return Optional.empty();
             }
         };

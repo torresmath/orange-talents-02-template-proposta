@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ public class GetCreditCardForApprovedProposals {
     @Autowired
     private AccountClient client;
 
+    @Async
     @Scheduled(fixedDelay = 5000)
     @Transactional
     @Lock(LockModeType.PESSIMISTIC_READ)

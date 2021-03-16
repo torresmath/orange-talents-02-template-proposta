@@ -36,8 +36,8 @@ feign:
         loggerLevel: full
 
 api:
-  account.url: ${ACCOUNT_API}:8888
-  analysis.url: ${ANALYSIS_API}:9999
+  account.url: ${ACCOUNT_API:localhost}:8888
+  analysis.url: ${ANALYSIS_API:localhost}:9999
 
 # keycloak
 auth:

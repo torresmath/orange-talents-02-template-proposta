@@ -1,4 +1,4 @@
-package com.zup.proposal.financialproposal.creditcard.controller.response;
+package com.zup.proposal.financialproposal.creditcard.jobs;
 
 import com.zup.proposal.financialproposal.client.account.AccountClient;
 import com.zup.proposal.financialproposal.creditcard.model.BlockStatus;

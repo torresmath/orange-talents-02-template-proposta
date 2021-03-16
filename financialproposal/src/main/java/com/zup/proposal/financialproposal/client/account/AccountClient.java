@@ -21,4 +21,7 @@ public interface AccountClient {
 
     @PostMapping("/api/cartoes/{number}/bloqueios")
     Optional<Map<String, String>> blockCreditCard(@PathVariable String number, Map<String, String> request);
+
+    @PostMapping("/api/cartoes/{number}/avisos")
+    Optional<Map<String, String>> notifyCreditCardTrip(@PathVariable String number, Map<String, String> request);
 }

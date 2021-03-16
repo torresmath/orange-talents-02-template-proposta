@@ -9,7 +9,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,10 +48,13 @@ public class CreditCard {
     private CreditCardDue expiration;
 
     @OneToMany(mappedBy = "creditCard", cascade = CascadeType.MERGE)
-    private Set<Biometry> biometries;
+    private Set<Biometry> biometries = new HashSet<>();
 
     @OneToMany(mappedBy = "creditCard", cascade = CascadeType.MERGE)
-    private Set<CreditCardBlock> blocks;
+    private Set<CreditCardBlock> blocks = new HashSet<>();
+
+    @OneToMany(mappedBy = "creditCard", cascade = CascadeType.MERGE)
+    private Set<CreditCardTrip> trips = new HashSet<>();
 
     public CreditCard(@NotNull @NotBlank String number, @NotNull @NotBlank String owner, @NotNull LocalDateTime emissionDate, @NotNull @Positive BigDecimal cardLimit, @NotNull CreditCardDue expiration, @NotNull Proposal proposal) {
         this.number = number;
@@ -69,6 +74,8 @@ public class CreditCard {
     public Long getId() {
         return id;
     }
+
+    public String getNumber() { return number; }
 
     public void scheduleBlock(CreditCardBlock block) {
         Assert.state(!isCurrentlyBlocked(), "Impossível adicionar novo bloqueio. Cartão já está bloqueado");
@@ -95,5 +102,25 @@ public class CreditCard {
         Assert.state(scheduledBlocks.size() == 1, "ERRO - Não há bloqueios agendados para este cartão");
 
         scheduledBlocks.get(0).setAsActive(client, this.number);
+    }
+
+    public void addTrip(CreditCardTrip trip) {
+
+        Assert.state(!haveScheduledTrips(), "ERRO - Já existem viagens agendadas para este cartão");
+
+        trips.add(trip);
+    }
+
+    public void notifyTrip(AccountClient client) {
+        scheduledTrips().forEach(t -> t.notifyTrip(client));
+    }
+
+    private Set<CreditCardTrip> scheduledTrips() {
+        return trips.stream().filter(CreditCardTrip::scheduled)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public boolean haveScheduledTrips() {
+        return trips.stream().anyMatch(t -> t.getEndDate().isAfter(LocalDate.now()));
     }
 }
