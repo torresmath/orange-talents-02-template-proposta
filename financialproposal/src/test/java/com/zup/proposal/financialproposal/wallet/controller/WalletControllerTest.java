@@ -28,7 +28,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -103,5 +102,31 @@ class WalletControllerTest {
         ResponseEntity<?> response = controller.create(1L, request);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         verify(manager, times(0)).merge(any(Wallet.class));
+    }
+
+    @Test
+    @DisplayName("Deveria criar carteira e retornar 201 caso ja exista carteira de provedor DIFERENTE")
+    void test3() {
+        HashSet<Wallet> wallets = new HashSet<>();
+        wallets.add(new Wallet("email@teste.com", Provider.PAYPAL, creditCard));
+
+        ReflectionTestUtils.setField(creditCard, "wallets", wallets);
+
+        when(manager.find(CreditCard.class, 1L))
+                .thenReturn(creditCard);
+
+        Wallet wallet = new Wallet("email", Provider.SAMSUNG_PAY, creditCard);
+        ReflectionTestUtils.setField(wallet, "id", 1L);
+
+        when(manager.merge(any(Wallet.class)))
+                .thenReturn(wallet);
+
+        ReflectionTestUtils.setField(request, "provider", "SAMSUNG_PAY");
+
+        MockHttpServletRequest mockServlet = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(mockServlet));
+
+        ResponseEntity<?> response = controller.create(1L, request);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 }

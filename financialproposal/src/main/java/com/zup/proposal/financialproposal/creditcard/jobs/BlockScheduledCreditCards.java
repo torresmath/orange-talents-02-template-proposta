@@ -6,7 +6,6 @@ import com.zup.proposal.financialproposal.creditcard.repository.CreditCardReposi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Lock;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.LockModeType;

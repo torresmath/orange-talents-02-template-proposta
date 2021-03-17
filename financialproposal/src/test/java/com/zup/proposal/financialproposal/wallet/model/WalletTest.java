@@ -4,7 +4,6 @@ import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
 import com.zup.proposal.financialproposal.creditcard.model.CreditCardDue;
 import com.zup.proposal.financialproposal.proposal.model.Address;
 import com.zup.proposal.financialproposal.proposal.model.Proposal;
-import com.zup.proposal.financialproposal.wallet.controller.request.WalletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class WalletTest {
 
@@ -44,11 +44,21 @@ class WalletTest {
     @DisplayName("Deveria criar carteira com sucesso")
     void test1() {
 
-
         HashSet<Wallet> wallets = new HashSet<>();
         ReflectionTestUtils.setField(creditCard, "wallets", wallets);
 
         assertDoesNotThrow(() -> new Wallet("email@teste.com", Provider.PAYPAL, creditCard));
+    }
+
+    @Test
+    @DisplayName("Deveria criar carteira com sucesso caso cartao esteja vinculado a carteira de provedor DIFERENTE")
+    void test2() {
+
+        HashSet<Wallet> wallets = new HashSet<>();
+        wallets.add(new Wallet("email@teste.com", Provider.PAYPAL, creditCard));
+        ReflectionTestUtils.setField(creditCard, "wallets", wallets);
+
+        assertDoesNotThrow(() -> new Wallet("email@teste.com", Provider.SAMSUNG_PAY, creditCard));
     }
 
 }
