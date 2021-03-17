@@ -64,7 +64,7 @@ public class CreditCardTripController {
     }
 
     @Transactional
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 60000)
     @Lock(LockModeType.PESSIMISTIC_READ)
     public void notifyTrips() {
         repository.findByTripsNotificationTimestampIsNullAndTripsEndDateGreaterThan(LocalDate.now(), PageRequest.of(0, 5))

@@ -134,34 +134,29 @@ services:
       VAULT_TOKEN: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_ADDR: http://127.0.0.1:8200
 
-#  mysql:
-#    container_name: mysql
-#    image: mysql:8.0
-#    volumes:
-#      - mysql-volume:/var/lib/proposals-mysql/data
-#    ports:
-#      - 3306:3306
-#    environment:
-#      MYSQL_ROOT_PASSWORD: ajudazupper
-#      MYSQL_PASSWORD: ajudazupper
-#      MYSQL_DATABASE: financial_proposals
-#      MYSQL_ALLOW_EMPTY_PASSWORD: 1
-#
-#  proposta:
-#    build:
-#      dockerfile: Dockerfile
-#      context: .
-#    image: java:11
-#    container_name: propostas
-#    depends_on:
-#      - mysql
-#    environment:
-#      DB_SUPPLIER: mysql
-#      DB_USERNAME: root
-#      DB_PASSWORD: ajudazupper
-#      ACCOUNT_API: contas
-#      ANALYSIS_API: analise
-#      SERVER_PORT: 8081
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    volumes:
+      - mysql-volume:/var/lib/proposals-mysql/data
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ajudazupper
+      MYSQL_PASSWORD: ajudazupper
+      MYSQL_DATABASE: financial_proposals
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+
+  proposals:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: java:11
+    container_name: proposals
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
 
 volumes:
   grafana-volume:

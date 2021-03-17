@@ -9,6 +9,10 @@ import java.util.Optional;
 public class AuthClientFallbackFactory implements FallbackFactory<AuthClient> {
     @Override
     public AuthClient create(Throwable cause) {
-        return request -> Optional.empty();
+        return request -> {
+
+            System.out.println("cause = " + cause);
+            return Optional.empty();
+        };
     }
 }

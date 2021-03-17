@@ -1,20 +1,29 @@
 server.port: ${SERVER_PORT:8080}
 spring:
-  application.name: proposals
+  application.name: ${APP_NAME:proposals}
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_SUPPLIER}:3306/financial_proposals?useTimezone=true&serverTimezone=America/Sao_Paulo
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/financial_proposals?useTimezone=true&serverTimezone=America/Sao_Paulo
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:ajudazupper}
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
     format-sql: true
     hibernate.ddl-auto: update
-  security.oauth2.resourceserver.jwt:
-    issuer-uri: http://${KEYCLOAK_SUPPLIER:localhost}:18080/auth/realms/propostas
-    jwk-set-uri: http://${KEYCLOAK_SUPPLIER:localhost}:18080/auth/realms/propostas/protocol/openid-connect/certs
 
+  # keycloak
+  security.oauth2.resourceserver.jwt:
+    issuer-uri: http://${KEYCLOAK_SUPPLIER:localhost}:${KEYCLOAK_PORT:18080}/auth/realms/propostas
+    jwk-set-uri: http://${KEYCLOAK_SUPPLIER:localhost}:${KEYCLOAK_PORT:18080}/auth/realms/propostas/protocol/openid-connect/certs
+auth:
+  client_id: proposals
+  client_secret: f6e9c65d-9c80-4ca4-adeb-6ad3e7dfda2d
+  uri: http://${KEYCLOAK_SUPPLIER:localhost}:${KEYCLOAK_PORT:18080}/auth/realms/propostas/protocol/openid-connect/token
+  grant_type: password
+  scope: openid
+
+# actuator
 management:
   endpoints:
     web.exposure.include: health, prometheus, info
@@ -26,7 +35,6 @@ management:
 
 
 # feign
-
 feign:
   hystrix.enabled: true
   client:
@@ -40,22 +48,11 @@ api:
   account.url: ${ACCOUNT_API:localhost}:8888
   analysis.url: ${ANALYSIS_API:localhost}:9999
 
-# keycloak
-auth:
-  client_id: proposals
-  client_secret: f6e9c65d-9c80-4ca4-adeb-6ad3e7dfda2d
-  uri: http://${KEYCLOAK_SUPPLIER:localhost}:18080/auth/realms/propostas/protocol/openid-connect/token
-  grant_type: password
-  scope: openid
-
 # jaeger
 opentracing:
   jaeger:
     enabled: ${JAEGER_ENABLED:true}
-    service-name: ${spring.application.name}
-    udp-sender:
-      host: ${JAEGER_PORT:localhost}
-      port: ${SERVER_PORT:5775}
+    service-name: ${APP_NAME:proposals}
     http-sender.url: ${JAEGER_ENDPOINT:http://localhost:14268/api/traces}
     log-spans: true
     probabilistic-sampler.sampling-rate: ${JAEGER_SAMPLES:1}

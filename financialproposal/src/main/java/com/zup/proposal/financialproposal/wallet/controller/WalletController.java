@@ -70,7 +70,7 @@ public class WalletController {
 
     @Async
     @Transactional
-    @Scheduled(fixedDelay = 7000)
+    @Scheduled(fixedDelay = 60000)
     @Lock(LockModeType.PESSIMISTIC_READ)
     public void submitWallets() {
 

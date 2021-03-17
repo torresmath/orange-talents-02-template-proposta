@@ -106,7 +106,7 @@ public class CreditCardBlockController {
 
     @Async
     @Transactional
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 60000)
     @Lock(LockModeType.PESSIMISTIC_READ)
     public void blockScheduledCreditCards() {
 
