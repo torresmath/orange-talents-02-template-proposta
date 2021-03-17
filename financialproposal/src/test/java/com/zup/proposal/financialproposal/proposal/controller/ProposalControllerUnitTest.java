@@ -67,7 +67,7 @@ class ProposalControllerUnitTest {
         MockHttpServletRequest servlet = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(servlet));
 
-        ResponseEntity<?> response = controller.create(request);
+        ResponseEntity<?> response = controller.createProposal(request);
 
         verify(repository, times(1)).save(any(Proposal.class));
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -90,7 +90,7 @@ class ProposalControllerUnitTest {
         MockHttpServletRequest servlet = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(servlet));
 
-        ResponseEntity<?> response = controller.create(request);
+        ResponseEntity<?> response = controller.createProposal(request);
 
         verify(repository, times(1)).save(any(Proposal.class));
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -103,7 +103,7 @@ class ProposalControllerUnitTest {
         when(repository.existsByDocument(request.getDocument()))
                 .thenReturn(true);
 
-        ResponseEntity<?> response = controller.create(request);
+        ResponseEntity<?> response = controller.createProposal(request);
 
         verify(repository, times(0)).save(any());
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());

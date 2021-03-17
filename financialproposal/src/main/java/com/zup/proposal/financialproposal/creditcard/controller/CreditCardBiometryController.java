@@ -24,7 +24,7 @@ public class CreditCardBiometryController {
 
     @PostMapping("/{id}/biometry")
     @Transactional
-    public ResponseEntity<?> create(@PathVariable("id") Long idCreditCard, @RequestBody @Valid BiometryRequest request) {
+    public ResponseEntity<?> createBiometry(@PathVariable("id") Long idCreditCard, @RequestBody @Valid BiometryRequest request) {
 
         Optional<CreditCard> possibleCreditCard = Optional.ofNullable(manager.find(CreditCard.class, idCreditCard));
 

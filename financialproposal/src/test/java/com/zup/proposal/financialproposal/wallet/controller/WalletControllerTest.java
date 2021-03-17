@@ -7,6 +7,8 @@ import com.zup.proposal.financialproposal.proposal.model.Proposal;
 import com.zup.proposal.financialproposal.wallet.controller.request.WalletRequest;
 import com.zup.proposal.financialproposal.wallet.model.Provider;
 import com.zup.proposal.financialproposal.wallet.model.Wallet;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,12 @@ import static org.mockito.Mockito.*;
 class WalletControllerTest {
 
     @Mock
+    private Tracer tracer;
+
+    @Mock
+    private Span span;
+
+    @Mock
     private EntityManager manager;
 
     @Autowired
@@ -53,6 +61,9 @@ class WalletControllerTest {
         request = new WalletRequest();
         ReflectionTestUtils.setField(request, "email", "email@teste.com");
         ReflectionTestUtils.setField(request, "provider", "PAYPAL");
+
+        when(tracer.activeSpan())
+                .thenReturn(span);
     }
 
     @Test
@@ -71,7 +82,7 @@ class WalletControllerTest {
         MockHttpServletRequest mockServlet = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(mockServlet));
 
-        ResponseEntity<?> response = controller.create(1L, request);
+        ResponseEntity<?> response = controller.createWallet(1L, request);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
@@ -82,7 +93,7 @@ class WalletControllerTest {
         when(manager.find(CreditCard.class, 1L))
                 .thenReturn(null);
 
-        ResponseEntity<?> response = controller.create(1L, request);
+        ResponseEntity<?> response = controller.createWallet(1L, request);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(manager, times(0)).merge(any(Wallet.class));
     }
@@ -99,7 +110,7 @@ class WalletControllerTest {
         when(manager.find(CreditCard.class, 1L))
                 .thenReturn(creditCard);
 
-        ResponseEntity<?> response = controller.create(1L, request);
+        ResponseEntity<?> response = controller.createWallet(1L, request);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         verify(manager, times(0)).merge(any(Wallet.class));
     }
@@ -126,7 +137,7 @@ class WalletControllerTest {
         MockHttpServletRequest mockServlet = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(mockServlet));
 
-        ResponseEntity<?> response = controller.create(1L, request);
+        ResponseEntity<?> response = controller.createWallet(1L, request);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 }

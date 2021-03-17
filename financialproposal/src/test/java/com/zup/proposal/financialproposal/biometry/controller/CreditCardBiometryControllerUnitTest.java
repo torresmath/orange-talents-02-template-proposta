@@ -74,7 +74,7 @@ class CreditCardBiometryControllerUnitTest {
         MockHttpServletRequest servlet = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(servlet));
 
-        ResponseEntity<?> response = controller.create(1L, request);
+        ResponseEntity<?> response = controller.createBiometry(1L, request);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
@@ -85,7 +85,7 @@ class CreditCardBiometryControllerUnitTest {
         when(manager.find(CreditCard.class, 1L))
                 .thenReturn(null);
 
-        ResponseEntity<?> response = controller.create(1L, request);
+        ResponseEntity<?> response = controller.createBiometry(1L, request);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(manager, times(0)).merge(any(Biometry.class));
 

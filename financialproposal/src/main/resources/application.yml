@@ -1,5 +1,6 @@
-server.port: ${SERVER_PORT}
+server.port: ${SERVER_PORT:8080}
 spring:
+  application.name: proposals
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_SUPPLIER}:3306/financial_proposals?useTimezone=true&serverTimezone=America/Sao_Paulo
@@ -46,3 +47,16 @@ auth:
   uri: http://${KEYCLOAK_SUPPLIER:localhost}:18080/auth/realms/propostas/protocol/openid-connect/token
   grant_type: password
   scope: openid
+
+# jaeger
+opentracing:
+  jaeger:
+    enabled: ${JAEGER_ENABLED:true}
+    service-name: ${spring.application.name}
+    udp-sender:
+      host: ${JAEGER_PORT:localhost}
+      port: ${SERVER_PORT:5775}
+    http-sender.url: ${JAEGER_ENDPOINT:http://localhost:14268/api/traces}
+    log-spans: true
+    probabilistic-sampler.sampling-rate: ${JAEGER_SAMPLES:1}
+  spring.cloud.jdbc.enabled: false # avoid "Triggering deferred initialization of Spring Data repositories" lock on startup

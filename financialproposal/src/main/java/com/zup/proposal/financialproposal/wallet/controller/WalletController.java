@@ -3,9 +3,11 @@ package com.zup.proposal.financialproposal.wallet.controller;
 import com.zup.proposal.financialproposal.client.account.AccountClient;
 import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
 import com.zup.proposal.financialproposal.wallet.controller.request.WalletRequest;
+import com.zup.proposal.financialproposal.wallet.controller.response.WalletResponse;
 import com.zup.proposal.financialproposal.wallet.model.Wallet;
 import com.zup.proposal.financialproposal.wallet.model.WalletStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -16,7 +18,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -26,15 +27,24 @@ import java.util.Optional;
 @RequestMapping("/api/wallet")
 public class WalletController {
 
-    @PersistenceContext
-    private EntityManager manager;
+    private final Tracer tracer;
 
-    @Autowired
-    private AccountClient client;
+    private final EntityManager manager;
+
+    private final AccountClient client;
+
+    public WalletController(AccountClient client, EntityManager manager, Tracer tracer) {
+        this.client = client;
+        this.manager = manager;
+        this.tracer = tracer;
+    }
 
     @PostMapping("/credit-card/{id}")
     @Transactional
-    public ResponseEntity<?> create(@PathVariable Long id, @RequestBody @Valid WalletRequest request) {
+    public ResponseEntity<?> createWallet(@PathVariable Long id, @RequestBody @Valid WalletRequest request) {
+
+        Span span = tracer.activeSpan();
+        span.setTag("operation", "Create wallet");
 
         Optional<CreditCard> possibleCreditCard = Optional.ofNullable(manager.find(CreditCard.class, id));
 
@@ -74,7 +84,7 @@ public class WalletController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable Long id) {
+    public ResponseEntity<?> getWallet(@PathVariable Long id) {
 
         Wallet wallet = manager.find(Wallet.class, id);
 

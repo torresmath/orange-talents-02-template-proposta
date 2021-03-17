@@ -63,7 +63,7 @@ class CreditCardBlockControllerTest {
         when(headers.getClientIp())
                 .thenReturn(null);
 
-        ResponseEntity<?> response = controller.block(1L);
+        ResponseEntity<?> response = controller.requestBlock(1L);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(manager, times(0)).find(any(), anyLong());
@@ -80,7 +80,7 @@ class CreditCardBlockControllerTest {
         when(headers.getUserAgent())
                 .thenReturn(null);
 
-        ResponseEntity<?> response = controller.block(1L);
+        ResponseEntity<?> response = controller.requestBlock(1L);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(manager, times(0)).find(any(), anyLong());
@@ -98,7 +98,7 @@ class CreditCardBlockControllerTest {
         when(manager.find(CreditCard.class, 1L))
                 .thenReturn(null);
 
-        ResponseEntity<?> response = controller.block(1L);
+        ResponseEntity<?> response = controller.requestBlock(1L);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -120,7 +120,7 @@ class CreditCardBlockControllerTest {
         when(manager.find(CreditCard.class, 1L))
                 .thenReturn(creditCard);
 
-        ResponseEntity<?> response = controller.block(1L);
+        ResponseEntity<?> response = controller.requestBlock(1L);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         assertEquals("Cartão já está bloqueado", response.getBody());
@@ -140,7 +140,7 @@ class CreditCardBlockControllerTest {
         when(manager.find(CreditCard.class, 1L))
                 .thenReturn(creditCard);
 
-        ResponseEntity<?> response = controller.block(1L);
+        ResponseEntity<?> response = controller.requestBlock(1L);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         assertEquals("Já existe um bloqueio em andamento para este cartão", response.getBody());
@@ -161,7 +161,7 @@ class CreditCardBlockControllerTest {
         when(manager.find(CreditCard.class, 1L))
                 .thenReturn(creditCard);
 
-        ResponseEntity<?> response = controller.block(1L);
+        ResponseEntity<?> response = controller.requestBlock(1L);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }

@@ -70,7 +70,7 @@ class CreditCardTripControllerTest {
                     "user_agent", "Test-Agent"
                 )));
 
-        ResponseEntity<?> response = controller.create(1L, request);
+        ResponseEntity<?> response = controller.createTrip(1L, request);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -87,7 +87,7 @@ class CreditCardTripControllerTest {
                         "user_agent", "Test-Agent"
                 )));
 
-        ResponseEntity<?> response = controller.create(1L, request);
+        ResponseEntity<?> response = controller.createTrip(1L, request);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -110,7 +110,7 @@ class CreditCardTripControllerTest {
                         "user_agent", "Test-Agent"
                 )));
 
-        ResponseEntity<?> response = controller.create(1L, request);
+        ResponseEntity<?> response = controller.createTrip(1L, request);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         verify(repository, times(0)).save(any());

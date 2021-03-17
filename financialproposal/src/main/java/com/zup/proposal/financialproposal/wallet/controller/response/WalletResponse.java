@@ -1,4 +1,4 @@
-package com.zup.proposal.financialproposal.wallet.controller;
+package com.zup.proposal.financialproposal.wallet.controller.response;
 
 import com.zup.proposal.financialproposal.wallet.model.Provider;
 import com.zup.proposal.financialproposal.wallet.model.Wallet;

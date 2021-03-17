@@ -40,7 +40,7 @@ public class CreditCardBlockController {
 
     @PostMapping("/{id}/block")
     @Transactional
-    public ResponseEntity<?> block(@PathVariable Long id) {
+    public ResponseEntity<?> requestBlock(@PathVariable Long id) {
         String clientIp = requestHeadersValidation.getClientIp();
         String userAgent = requestHeadersValidation.getUserAgent();
 

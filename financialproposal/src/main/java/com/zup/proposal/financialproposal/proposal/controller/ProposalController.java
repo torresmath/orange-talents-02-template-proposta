@@ -29,7 +29,7 @@ public class ProposalController {
     @PostMapping
     @Transactional
     @Timed(value = "proposta_criada")
-    public ResponseEntity<?> create(@RequestBody @Valid ProposalRequest request) {
+    public ResponseEntity<?> createProposal(@RequestBody @Valid ProposalRequest request) {
 
         boolean duplicatedProposal = repository.existsByDocument(request.getDocument());
 
@@ -49,7 +49,7 @@ public class ProposalController {
 
     @GetMapping("/{id}")
     @Timed(value = "consultar_proposta")
-    public ResponseEntity<ProposalResponse> get(@PathVariable Long id) {
+    public ResponseEntity<ProposalResponse> getProposal(@PathVariable Long id) {
 
         Optional<Proposal> possibleProposal = repository.findById(id);
 

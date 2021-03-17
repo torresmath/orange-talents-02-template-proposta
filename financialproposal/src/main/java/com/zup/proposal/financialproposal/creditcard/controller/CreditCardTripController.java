@@ -34,7 +34,7 @@ public class CreditCardTripController {
 
     @PostMapping("/{id}/trip")
     @Transactional
-    public ResponseEntity<?> create(@PathVariable Long id, @RequestBody @Valid CreditCardTripRequest request) {
+    public ResponseEntity<?> createTrip(@PathVariable Long id, @RequestBody @Valid CreditCardTripRequest request) {
 
         Optional<Map<String, String>> possibleHeaders = this.headersValidator.getHeaders();
 
