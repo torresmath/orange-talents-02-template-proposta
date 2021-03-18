@@ -7,6 +7,8 @@ import com.zup.proposal.financialproposal.client.analysis.AnalysisClient;
 import com.zup.proposal.financialproposal.client.analysis.response.AnalysisResponse;
 import com.zup.proposal.financialproposal.creditcard.model.CreditCard;
 import com.zup.proposal.financialproposal.proposal.repository.ProposalRepository;
+import org.bouncycastle.util.encoders.Hex;
+import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -16,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Entity
@@ -64,9 +67,16 @@ public class Proposal {
         Assert.isTrue(salary.compareTo(BigDecimal.ZERO) > 0, "Impossivel criar Proposta com salário invalido: " + salary);
         Assert.notNull(address, "Impossivel criar Proposta sem endereco");
 
+        String rawDocument = document.replaceAll("[.-]", "");
+
+        String hexSalt = Hex.toHexString(UUID.randomUUID().toString().getBytes());
+        String hexDocument = Hex.toHexString(rawDocument.getBytes());
+
+        String encryptDocument = Encryptors.text(hexDocument, hexSalt).encrypt(rawDocument);
+
         this.name = name;
         this.email = email;
-        this.document = document.replaceAll("[.-]", "");
+        this.document = encryptDocument;
         this.salary = salary;
         this.address = address;
     }
